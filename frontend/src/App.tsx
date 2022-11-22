@@ -1,60 +1,75 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.scss';
-import { GoodsList } from './components/GoodsList';
-import { Color } from './types/Color';
 import { Good } from './types/Good';
+import { getAllGoods } from './api/goods';
+import { getAllColors } from './api/colors';
+import { Color } from './types/Color';
 import { GoodWithColor } from './types/GoodWithColor';
+import { GoodsList } from './components/GoodsList';
 import { AddGoodForm } from './components/AddGoodForm';
 
-const colors: Color[] = [
-  { id: 1, name: 'red' },
-  { id: 2, name: 'green' },
-  { id: 3, name: 'blue' },
-];
-
-const goodsFromServer: Good[] = [
-  { id: 1, colorId: 1, name: 'Dumplings' },
-  { id: 2, colorId: 2, name: 'Carrot' },
-  { id: 3, colorId: 3, name: 'Eggs' },
-  { id: 4, colorId: 1, name: 'Ice cream' },
-  { id: 5, colorId: 2, name: 'Apple' },
-  { id: 6, colorId: 3, name: 'Bread' },
-  { id: 7, colorId: 1, name: 'Fish' },
-  { id: 8, colorId: 2, name: 'Honey' },
-  { id: 9, colorId: 3, name: 'Jam' },
-  { id: 10, colorId: 1, name: 'Garlic' },
-];
-
-const getColorById = (colorId: number) => {
+const getColorById = (colorId: number, colors: Color[]) => {
   const foundColor = colors.find(color => color.id === colorId);
 
   return foundColor || null;
 };
 
-const goodsWithColors: GoodWithColor[] = goodsFromServer.map(good => ({
-  ...good,
-  color: getColorById(good.colorId),
-}));
+const getGoodsWithColors = (
+  goods: Good[],
+  colors: Color[],
+): GoodWithColor[] => {
+  return goods.map(good => ({
+    ...good,
+    color: getColorById(good.colorId, colors),
+  }));
+};
 
 export const App: React.FC = () => {
-  const [goods, setGoods] = useState<GoodWithColor[]>(goodsWithColors);
+  const [goods, setGoods] = useState<Good[]>([]);
+  const [goodsWithColors, setGoodsWithColors] = useState<GoodWithColor[]>([]);
+  const [colors, setColors] = useState<Color[]>([]);
 
   const addNewGood = (name: string, colorId: number) => {
-    const color = getColorById(colorId);
-
-    const newGood: GoodWithColor = {
-      id: Date.now(),
-      colorId,
-      name,
-      color,
-    };
-
-    setGoods((currentGoods) => [...currentGoods, newGood]);
+    // eslint-disable-next-line no-console
+    console.log(name, colorId);
   };
+
+  const getGoods = async () => {
+    try {
+      const goodsFromServer = await getAllGoods();
+
+      setGoods(goodsFromServer);
+    } catch (error: any) {
+      // eslint-disable-next-line no-console
+      console.log(error.message);
+    }
+  };
+
+  const getColors = async () => {
+    try {
+      const colorsFromServer = await getAllColors();
+
+      setColors(colorsFromServer);
+    } catch (error: any) {
+      // eslint-disable-next-line no-console
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getGoods();
+    getColors();
+  }, []);
+
+  useEffect(() => {
+    const allGoods = getGoodsWithColors(goods, colors);
+
+    setGoodsWithColors(allGoods);
+  }, [goods, colors]);
 
   return (
     <div className="App">
-      <GoodsList goods={goods} />
+      <GoodsList goods={goodsWithColors} />
 
       <AddGoodForm addNewGood={addNewGood} />
     </div>
