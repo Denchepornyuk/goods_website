@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.scss';
 import { Good } from './types/Good';
-import { getAllGoods } from './api/goods';
+import { addGood, getAllGoods, removeOneGood } from './api/goods';
 import { getAllColors } from './api/colors';
 import { Color } from './types/Color';
 import { GoodWithColor } from './types/GoodWithColor';
@@ -29,11 +29,6 @@ export const App: React.FC = () => {
   const [goodsWithColors, setGoodsWithColors] = useState<GoodWithColor[]>([]);
   const [colors, setColors] = useState<Color[]>([]);
 
-  const addNewGood = (name: string, colorId: number) => {
-    // eslint-disable-next-line no-console
-    console.log(name, colorId);
-  };
-
   const getGoods = async () => {
     try {
       const goodsFromServer = await getAllGoods();
@@ -56,6 +51,26 @@ export const App: React.FC = () => {
     }
   };
 
+  const addNewGood = async (name: string, colorId: number) => {
+    try {
+      await addGood(name, colorId);
+      await getGoods();
+    } catch (error: any) {
+      // eslint-disable-next-line no-console
+      console.log(error.message);
+    }
+  };
+
+  const removeGood = async (goodId: number) => {
+    try {
+      await removeOneGood(goodId);
+      await getGoods();
+    } catch (error: any) {
+      // eslint-disable-next-line no-console
+      console.log(error.message);
+    }
+  };
+
   useEffect(() => {
     getGoods();
     getColors();
@@ -69,7 +84,10 @@ export const App: React.FC = () => {
 
   return (
     <div className="App">
-      <GoodsList goods={goodsWithColors} />
+      <GoodsList
+        goods={goodsWithColors}
+        removeGood={removeGood}
+      />
 
       <AddGoodForm addNewGood={addNewGood} />
     </div>

@@ -13,3 +13,24 @@ export const getGoodById = async (goodId: number): Promise<Good> => {
 
   return response.json();
 };
+
+export const addGood = async (
+  name: string,
+  colorId: number,
+): Promise<Good> => {
+  const response = await fetch(BASE_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: JSON.stringify({ name, colorId }),
+  });
+
+  return response.json();
+};
+
+export const removeOneGood = async (goodId: number): Promise<void> => {
+  await fetch(`${BASE_URL}/${goodId}`, {
+    method: 'DELETE',
+  });
+};
