@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.scss';
 import { Good } from './types/Good';
-import { addGood, getAllGoods, removeOneGood } from './api/goods';
-import { getAllColors } from './api/colors';
 import { Color } from './types/Color';
 import { GoodWithColor } from './types/GoodWithColor';
 import { GoodsList } from './components/GoodsList';
@@ -10,11 +8,7 @@ import { AddGoodForm } from './components/AddGoodForm';
 import { getAllColors } from './api/colors';
 import { addGood, getAllGoods, removeOneGood } from './api/goods';
 
-<<<<<<< HEAD
-const getColorById = (colorId: number, colors: Color[]) => {
-=======
 const getColorById = (colors: Color[], colorId: number) => {
->>>>>>> master
   const foundColor = colors.find(color => color.id === colorId);
 
   return foundColor || null;
@@ -26,11 +20,7 @@ const getGoodsWithColors = (
 ): GoodWithColor[] => {
   return goods.map(good => ({
     ...good,
-<<<<<<< HEAD
-    color: getColorById(good.colorId, colors),
-=======
     color: getColorById(colors, good.colorId),
->>>>>>> master
   }));
 };
 
@@ -45,12 +35,9 @@ export const App: React.FC = () => {
 
       setGoods(goodsFromServer);
     } catch (error: any) {
-      // eslint-disable-next-line no-console
-<<<<<<< HEAD
       console.log(error.message);
-=======
+
       console.log('error', error.message);
->>>>>>> master
     }
   };
 
@@ -61,11 +48,7 @@ export const App: React.FC = () => {
       setColors(colorsFromServer);
     } catch (error: any) {
       // eslint-disable-next-line no-console
-<<<<<<< HEAD
-      console.log(error.message);
-=======
       console.log('error', error.message);
->>>>>>> master
     }
   };
 
@@ -95,27 +78,14 @@ export const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-<<<<<<< HEAD
-    const allGoods = getGoodsWithColors(goods, colors);
-
-    setGoodsWithColors(allGoods);
-=======
     const allGoodsWithColors = getGoodsWithColors(goods, colors);
 
     setGoodsWithColors(allGoodsWithColors);
->>>>>>> master
   }, [goods, colors]);
 
   return (
     <div className="App">
-<<<<<<< HEAD
-      <GoodsList
-        goods={goodsWithColors}
-        removeGood={removeGood}
-      />
-=======
       <GoodsList goods={goodsWithColors} removeGood={removeGood} />
->>>>>>> master
 
       <AddGoodForm
         addNewGood={addNewGood}
