@@ -1,7 +1,7 @@
-import express from 'express';
-import * as colorController from "../controllers/colors";
+import { Router } from "express";
+import * as colorsController from '../controllers/colors';
 
-export const router = express.Router();
+export const route = Router();
 
-router.get('/', colorController.getAll)
-router.get('/:colorId', colorController.getOne)
+route.get('/', colorsController.getAll);
+route.get('/:colorId', colorsController.getOne);
