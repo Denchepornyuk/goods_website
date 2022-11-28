@@ -89,7 +89,10 @@ export const App: React.FC = () => {
         removeGood={removeGood}
       />
 
-      <AddGoodForm addNewGood={addNewGood} />
+      <AddGoodForm
+        addNewGood={addNewGood}
+        colors={colors}
+      />
     </div>
   );
 };

@@ -1,15 +1,9 @@
-const colors = [
-  { id: 1, name: 'red' },
-  { id: 2, name: 'green' },
-  { id: 3, name: 'blue' },
-];
+import {Color} from "../models/Color";
 
-export const getAll = () => {
-  return colors;
+export const getAll = async () => {
+  return Color.findAll();
 }
 
-export const getColorById = (colorId: number) => {
-  const foundColor = colors.find(color => color.id === colorId);
-
-  return foundColor || null;
+export const getColorById = async (colorId: number) => {
+  return Color.findByPk(colorId);
 }
