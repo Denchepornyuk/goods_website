@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/server.ts"
+    "start": "nodemon src/server.ts",
+    "setup": "ts-node src/setup.ts"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +21,10 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.25.8",
     "uuid": "^9.0.0"
   }
 }
