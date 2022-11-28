@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 
-import { router as goodsRouter } from './routes/goods';
-import { router as colorsRouter } from './routes/colors';
+import { router as goodsRouter} from './routes/goods';
+import { router as colorsRouter} from './routes/colors';
 
 const app = express();
 

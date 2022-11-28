@@ -1,25 +1,25 @@
 import { Request, Response } from 'express';
-import * as goodService from '../services/goods';
+import * as goodsService from '../services/goods';
 
-export const getAll = (req: Request, res: Response) => {
-  const goods = goodService.getAll();
+export const getAll = async (req: Request, res: Response) => {
+  const goods = await goodsService.getAll();
 
   res.send(goods);
 }
 
-export const getOne = (req: Request, res: Response) => {
+export const getOne = async (req: Request, res: Response) => {
   const { goodId } = req.params;
-  const foundGood = goodService.getById(+goodId);
+  const foundGood = await goodsService.getGoodById(+goodId);
 
   if (!foundGood) {
     res.sendStatus(404);
-    return
+    return;
   }
 
   res.send(foundGood);
 }
 
-export const add = (req: Request, res: Response) => {
+export const add = async (req: Request, res: Response) => {
   const { name, colorId } = req.body;
 
   if (!name || !colorId) {
@@ -27,22 +27,21 @@ export const add = (req: Request, res: Response) => {
     return;
   }
 
-  const newGood = goodService.addGood(name, colorId);
+  const newGood = await goodsService.addGood(name, colorId);
 
   res.statusCode = 201;
-  res.send(newGood);
+  res.json(newGood);
 }
 
-export const remove = (req: Request, res: Response) => {
+export const remove = async (req: Request, res: Response) => {
   const { goodId } = req.params;
-  const foundGood = goodService.getById(+goodId);
+  const foundGood = await goodsService.getGoodById(+goodId);
 
   if (!foundGood) {
     res.sendStatus(404);
     return;
   }
 
-  goodService.remove(+goodId);
+  await goodsService.removeGood(+goodId);
   res.sendStatus(204);
 }
-
