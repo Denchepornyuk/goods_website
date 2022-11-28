@@ -1,10 +1,9 @@
-import { Router } from "express";
-import * as goodsController from '../controllers/goods';
+import express from 'express';
+import * as goodController from '../controllers/goods';
 
-export const route = Router();
+export const router = express.Router();
 
-route.get('/', goodsController.getAll);
-route.get('/:goodId', goodsController.getOne);
-route.post('/', goodsController.add);
-route.delete('/:goodId', goodsController.remove);
-
+router.get('/', goodController.getAll)
+router.get('/:goodId', goodController.getOne)
+router.post('/', goodController.add);
+router.delete('/:goodId', goodController.remove);
